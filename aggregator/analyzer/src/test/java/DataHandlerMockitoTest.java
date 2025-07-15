@@ -1,3 +1,4 @@
+import analyzer.MedalAnalyzer;
 import org.junit.jupiter.api.Test;
 import util.DataHandler;
 import entity.Medal;
@@ -28,4 +29,25 @@ public class DataHandlerMockitoTest {
 
         verify(mockHandler, times(1)).loadFromFile("fake.csv");
     }
+
+    @Test
+    public void testMedalApplicationFlow() {
+        DataHandler dataHandlerMock = mock(DataHandler.class);
+        MedalAnalyzer analyzerMock = mock(MedalAnalyzer.class);
+
+        List<Medal> fakeMedals = List.of(
+                new Medal(Country.USA, KindOfSport.FENCING, "Alice", 1)
+        );
+
+        when(dataHandlerMock.loadFromFile("test.csv")).thenReturn(fakeMedals);
+        when(analyzerMock.getGoldMedals(fakeMedals)).thenReturn(fakeMedals);
+
+        MedalApplication app = new MedalApplication(dataHandlerMock, analyzerMock);
+        List<Medal> result = app.run("test.csv");
+
+        assertEquals(1, result.size());
+        verify(dataHandlerMock).loadFromFile("test.csv");
+        verify(analyzerMock).getGoldMedals(fakeMedals);
+    }
+
 }
