@@ -63,6 +63,9 @@ public class MedalApplication {
         } else {
             System.out.println("Nobody has medals.\n");
         }
+        System.out.println("\nGold medalists:");
+        List<Medal> goldMedals = medalAnalyzer.getGoldMedals(medals);
+        goldMedals.forEach(System.out::println);
         logger.log(Level.INFO, "Application finished.");
     }
 }
