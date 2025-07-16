@@ -21,6 +21,18 @@ import java.util.logging.SimpleFormatter;
 public class MedalApplication {
     private static final String PATH = "medals.txt";
     private static Logger logger = Logger.getLogger(MedalApplication.class.getName());
+    private final DataHandler dataHandler;
+    private final MedalAnalyzer analyzer;
+
+    public MedalApplication(DataHandler dataHandler, MedalAnalyzer analyzer) {
+        this.dataHandler = dataHandler;
+        this.analyzer = analyzer;
+    }
+
+    public List<Medal> run(String path) {
+        List<Medal> medals = dataHandler.loadFromFile(path);
+        return analyzer.getGoldMedals(medals);
+    }
 
     static {
         try {
@@ -63,6 +75,9 @@ public class MedalApplication {
         } else {
             System.out.println("Nobody has medals.\n");
         }
+        System.out.println("\nGold medalists:");
+        List<Medal> goldMedals = medalAnalyzer.getGoldMedals(medals);
+        goldMedals.forEach(System.out::println);
         logger.log(Level.INFO, "Application finished.");
     }
 }
