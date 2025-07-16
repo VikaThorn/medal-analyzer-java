@@ -46,4 +46,11 @@ public class MedalAnalyzer {
                 .map(Map.Entry::getKey)
                 .toList();
     }
+
+    public List<Medal> getGoldMedals(List<Medal> medals) {
+        return medals.stream()
+                .filter(medal -> medal.getPlace() == 1)
+                .toList();
+    }
+
 }
